@@ -7,20 +7,9 @@
 using namespace std;
 
 string USERS_FILE = "users.txt";
-string TYPES[] = { "Movie", "TV Show" };
+string TYPES[] = { "Movie", "TV Show", "Song", "Podcast"};
 
 void loginScreen(); //TESTING PROTOTYPE
-
-bool stringContainsChar(string s, char c)
-{
-	for (int i = 0; i < s.length(); i++)
-	{
-		if (s[i] == c)
-			return true;
-	}
-
-	return false;
-}
 
 void getInput(string& data, string msg = "")
 {
@@ -29,15 +18,19 @@ void getInput(string& data, string msg = "")
 		cout << msg;
 		getline(cin, data);
 
-		if (stringContainsChar(data, '|'))
-			cout << "[!] The symbol '|' can not be used [!]\n";
-
-	} while (stringContainsChar(data, '|') || data.length() <= 0);
+	} while (data.length() <= 0);
 }
 
 class Time
 {
 public:
+	Time(int seconds)
+	{
+		hours = 0;
+		minutes = 0;
+		this->seconds = seconds;
+		fixTime();
+	}
 	Time()
 	{
 		cout << "Enter the Hours: ";
@@ -95,11 +88,6 @@ public:
 		return time.str();
 	}
 
-	void print()
-	{
-		cout << format();
-	}
-
 private:
 	int hours;
 	int minutes;
@@ -115,42 +103,36 @@ void getInput(int& data, string msg = "")
 class MediaBase
 {
 public:
+	MediaBase(string title, Time* time)
+	{
+		this->title = title;
+		this->time = time;
+	}
 	MediaBase()
 	{
-		setType();
 		cin.ignore();
 		getInput(title, "Enter the title: ");
 		time = new Time();
 	}
 	~MediaBase()
 	{
+		cout << "Media Destroyed!\n";
 		delete time;
 		time = nullptr;
 	}
 
 	virtual string formatInfo() = 0;
+	virtual void print() = 0;
 
 	//Getters
 	string getTitle() { return title; }
 	string getType() { return type; }
 	int getLength() { return time->getSeconds(); }
+	string getFormatedTime() { return time->format(); }
 
-	void setType()
+	void setType(string type)
 	{
-		int typesArrLength = sizeof(TYPES) / sizeof(TYPES[0]);
-
-		cout << "What type of meadia are you adding?\n";
-		for (int i = 0; i < typesArrLength; i++)
-		{
-			cout << i << ". " << TYPES[i] << endl;
-		}
-
-		int requestedType;
-
-		do
-		{
-			getInput(requestedType, "Choice : ");
-		} while (requestedType >= typesArrLength || requestedType < 0);
+		this->type = type;
 	}
 
 private:
@@ -162,10 +144,22 @@ private:
 class Movie : public MediaBase
 {
 public:
+	Movie(string title, Time* time, string director) : MediaBase(title, time)
+	{
+		setType("MOVIE");
+		this->director = director;
+	}
+
 	Movie() : MediaBase()
 	{
+		cout << "Movie Created!\n";
+		setType("MOVIE");
 		cin.ignore();
 		getInput(director, "Enter the director: ");
+	}
+	~Movie()
+	{
+		cout << "Movie Destroyed!\n";
 	}
 
 	//Getters
@@ -174,12 +168,19 @@ public:
 	virtual string formatInfo()
 	{
 		stringstream format;
-		format << getType() << "|"
-			<< getTitle() << "|"
-			<< getLength() << "|"
+		format << getType() << endl 
+			<< getTitle() << endl 
+			<< getLength() << endl 
 			<< getDirector() << endl;
 
 		return format.str();
+	}
+
+	virtual void print() override
+	{
+		cout << getTitle() << endl;
+		cout << getFormatedTime();
+		cout << getDirector() << endl;
 	}
 
 private:
@@ -242,22 +243,43 @@ void createUserFile(string user)
 	string fileName = user + ".txt";
 	ofstream file(fileName, std::ios::app);
 }
-MediaBase* getUserType()
+
+void fillVectorWithFile(vector<MediaBase*> &vec, const string& filename)
 {
-	MediaBase* type;
-	type = new Movie();
-	return type;
+	ifstream fin(filename);
+
+	while (!fin.eof())
+	{
+		string data;
+		getline(fin, data);
+		if (data == "MOVIE")
+		{
+			string title;
+			getline(fin, title);
+
+			int seconds;
+			fin >> seconds;
+			fin.ignore();
+
+			string director;
+			getline(fin, director);
+
+			MediaBase* newMovie = new Movie(title, new Time(seconds), director);
+			vec.push_back(newMovie);
+		}
+	}
 }
 
 void openUserFile(string user)
 {
 	//Set up and open user file;
-	string fileName = user + ".txt";
-	ofstream fout(fileName, std::ios::app);
-	ifstream fin(fileName);
+	string filename = user + ".txt";
+	ofstream fout(filename, std::ios::app);
+	ifstream fin(filename);
 
 	//Create vector
 	vector<MediaBase*> list;
+	fillVectorWithFile(list, filename);
 
 	//Give choives to user
 	cout << "===== " << user << "'s Collection =====\n";
@@ -268,12 +290,11 @@ void openUserFile(string user)
 	switch (choice)
 	{
 	case 1:
-		list.push_back(getUserType()); //Add based on type first
+		list.push_back(new Movie()); //Add based on type first
 		for (int i = 0; i < list.size(); i++)
 		{
 			fout << list[i]->formatInfo();
 		}
-		
 		break;
 	case 2:
 		//Edit Media 
@@ -283,6 +304,10 @@ void openUserFile(string user)
 		break;
 	case 4:
 		//View Media
+		for (MediaBase* media : list)
+		{
+			media->print();
+		}
 		break;
 	case 5:
 		//View Catagory
@@ -298,6 +323,8 @@ void openUserFile(string user)
 		cout << "[!] Not a valid option [!]\n";
 		break;
 	}
+
+	openUserFile(user);
 }
 
 void createAccount()
