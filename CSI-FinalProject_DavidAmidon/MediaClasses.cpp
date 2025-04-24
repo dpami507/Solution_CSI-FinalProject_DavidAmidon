@@ -29,14 +29,14 @@ void MediaBase::setType(string type) { this->type = type; }
 // --------------------- Movie --------------------- //
 Movie::Movie(string title, Time* time, string director) : MediaBase(title, time)
 {
-	setType("MOVIE");
+	setType(TYPES[0]);
 	this->director = director;
 }
 
 Movie::Movie() : MediaBase()
 {
 	cout << "Movie Created!\n";
-	setType("MOVIE");
+	setType(TYPES[0]);
 	cin.ignore();
 	getInput(director, "Enter the director: ");
 }

@@ -1,18 +1,19 @@
 #pragma once
+#include "Time.h"
+#include "MediaClasses.h"
 #include <string>
 #include <iostream>
 #include <iomanip>
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include "Time.h"
-#include "MediaClasses.h"
 using namespace std;
 
-string USERS_FILE = "users.txt";
-string TYPES[] = { "Movie", "TV Show", "Song", "Podcast" };
+const string USERS_FILE = "users.txt";
+const string TYPES[] = { "Movie", "TV Show", "Song", "Podcast" };
 
-void getInput(string& data, string msg = "");
+template<class T>
+void getInput(T& data, string msg = "");
 void getInput(int& data, string msg = "");
 
 bool usernameTaken(string username);

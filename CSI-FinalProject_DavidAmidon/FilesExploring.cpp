@@ -14,7 +14,7 @@ void fillVectorWithFile(vector<MediaBase*>& vec, const string& filename)
 	{
 		string data;
 		getline(fin, data);
-		if (data == "MOVIE")
+		if (data == TYPES[0])
 		{
 			string title;
 			getline(fin, title);

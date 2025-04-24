@@ -6,12 +6,9 @@ class Time
 public:
 	Time(int seconds);
 	Time();
-
 	void fixTime();
-
 	void setTimeFromSeconds(const int& i);
 	int getSeconds();
-
 	string format();
 
 private:

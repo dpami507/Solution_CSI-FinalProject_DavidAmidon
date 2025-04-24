@@ -1,6 +1,7 @@
 #include "Header.h"
 
-void getInput(string& data, string msg = "")
+template<class T>
+void getInput(T& data, string msg = "")
 {
 	do
 	{
