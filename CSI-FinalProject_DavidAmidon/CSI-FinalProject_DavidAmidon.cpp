@@ -7,7 +7,7 @@
 using namespace std;
 
 string USERS_FILE = "users.txt";
-string TYPES[] = { "Movie", "TV Show"};
+string TYPES[] = { "Movie", "TV Show" };
 
 void loginScreen(); //TESTING PROTOTYPE
 
@@ -22,7 +22,6 @@ bool stringContainsChar(string s, char c)
 	return false;
 }
 
-//template <class T>
 void getInput(string& data, string msg = "")
 {
 	do
@@ -225,9 +224,6 @@ string getUserPassword(string username)
 			return line;
 		}
 	}
-
-	string msg = "[!] Invalid Password [!]\n";
-	throw msg;
 }
 
 void printUserChoices()
@@ -246,6 +242,13 @@ void createUserFile(string user)
 	string fileName = user + ".txt";
 	ofstream file(fileName, std::ios::app);
 }
+MediaBase* getUserType()
+{
+	MediaBase* type;
+	type = new Movie();
+	return type;
+}
+
 void openUserFile(string user)
 {
 	//Set up and open user file;
@@ -265,11 +268,12 @@ void openUserFile(string user)
 	switch (choice)
 	{
 	case 1:
-		list.push_back(new Movie()); //Add based on type first
+		list.push_back(getUserType()); //Add based on type first
 		for (int i = 0; i < list.size(); i++)
 		{
 			fout << list[i]->formatInfo();
 		}
+		
 		break;
 	case 2:
 		//Edit Media 
@@ -313,10 +317,22 @@ void createAccount()
 	cin.ignore();
 
 	//Loop until unique username
+	bool taken = true;
 	do
 	{
 		getInput(username, "Create username: ");
-	} while (usernameTaken(username));
+
+		if (usernameTaken(username))
+		{
+			taken = true;
+			cout << "[!] Username Already Taken [!]\n";
+		}
+		else
+		{
+			taken = false;
+		}
+
+	} while (taken);
 
 	getInput(password, "Create password: ");
 
@@ -340,39 +356,51 @@ void login()
 	cin.ignore();
 
 	//Get username
+	bool taken = true;
 	do
 	{
 		getInput(username, "Enter username: ");
-	} while (!usernameTaken(username));
 
-	//Get password inpuut
-	getInput(password, "Enter password: ");
+		if (!usernameTaken(username))
+		{
+			taken = false;
+			cout << "[!] Username Doesn't Exist [!]\n";
+		}
+		else
+		{
+			taken = true;
+		}
+
+	} while (!taken);
 
 	//Get correct password
 	string correctPassword;
-	try
-	{
-		correctPassword = getUserPassword(username);
-	}
-	catch (string msg)
-	{
-		cout << msg;
-		return;
-	}
-	catch (...)
-	{
-		cout << "[!] DEV_ERR: Invalid throw type [!]";
-		return;
-	}
+	correctPassword = getUserPassword(username);
+	int attempts = 3;
 
-	if (password == correctPassword)
+	while (attempts > 0)
 	{
-		cout << "Login Success\n";
-		cout << endl;
-		openUserFile(username);
+		//Get password inpuut
+		getInput(password, "Enter password: ");
+
+		if (password == correctPassword)
+		{
+			cout << "Login Success\n";
+			cout << endl;
+			openUserFile(username);
+		}
+		else
+		{
+			attempts--;
+			cout << "[!] Invalid Password! Attempts Left: " << attempts << " [!]\n";
+		}
+
+		if (attempts <= 0)
+		{
+			cout << "[!] Max attempts reached, Exiting... [!]\n";
+			break;
+		}
 	}
-	else
-		cout << "Invalid Password!\n";
 }
 
 void loginScreen()
