@@ -1,4 +1,5 @@
 #include "Header.h"
+#include "MediaClasses.h"
 
 void createUserFile(string user)
 {
@@ -6,41 +7,33 @@ void createUserFile(string user)
 	ofstream file(fileName, std::ios::app);
 }
 
-void fillVectorWithFile(vector<MediaBase*>& vec, const string& filename)
+MediaBase* mediaType()
 {
-	ifstream fin(filename);
-
-	while (!fin.eof())
+	//Print types
+	for (int i = 0; i < TYPES_LENGTH; i++)
 	{
-		string data;
-		getline(fin, data);
-		if (data == TYPES[0])
-		{
-			string title;
-			getline(fin, title);
-
-			int seconds;
-			fin >> seconds;
-			fin.ignore();
-
-			string director;
-			getline(fin, director);
-
-			MediaBase* newMovie = new Movie(title, new Time(seconds), director);
-			vec.push_back(newMovie);
-		}
+		cout  << i << ". " << setw(10) << left << TYPES[i];
 	}
-}
+	cout << endl;
 
-void writeToFile(vector<MediaBase*>& vec, const string& filename)
-{
-	ofstream fout(filename);
-	for (int i = 0; i < vec.size(); i++)
+	//Get user choice
+	int choice;
+	getInput(choice, "Choice: ");
+
+	MediaBase* type;
+
+	//return type
+	switch (choice)
 	{
-		cout << vec[i]->formatInfo();
-		fout << vec[i]->formatInfo();
+	case 0:
+		type = new Movie();
+		return type;
+	case 1:
+		type = new TVShow();
+		return type;
+	default:
+		break;
 	}
-	fout.close();
 }
 
 void openUserFile(string user)
@@ -65,7 +58,7 @@ void openUserFile(string user)
 	switch (choice)
 	{
 	case 1:
-		newMedia = new Movie();
+		newMedia = mediaType();
 		list.push_back(newMedia); //Add based on type first
 		writeToFile(list, filename);
 		break;

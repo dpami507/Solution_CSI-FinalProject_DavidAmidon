@@ -1,12 +1,12 @@
 #pragma once
 #include "Header.h"
-using namespace std;
+#include "Time.h"
 
 class MediaBase
 {
 public:
-	MediaBase(string title, Time* time);
 	MediaBase();
+	MediaBase(string title, Time* time);
 	~MediaBase();
 
 	virtual string formatInfo() = 0;
@@ -43,3 +43,26 @@ public:
 private:
 	string director;
 };
+
+class TVShow : public MediaBase
+{
+public:
+	TVShow(string title, Time* time, int seasonLength, int episodeCount);
+	TVShow();
+	~TVShow();
+
+	//Getters
+	int getSeasonLength();
+	int getEpisodeCount();
+
+	virtual string formatInfo();
+
+	virtual void print() override;
+
+private:
+	int seasonLength;
+	int episodeCount;
+};
+
+void fillVectorWithFile(vector<MediaBase*>& vec, const string& filename);
+void writeToFile(vector<MediaBase*>& vec, const string& filename);

@@ -1,4 +1,5 @@
 #include "Header.h"
+#include "Time.h"
 
 Time::Time(int seconds)
 {
