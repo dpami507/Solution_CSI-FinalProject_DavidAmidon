@@ -134,6 +134,26 @@ void fillVectorWithFile(vector<MediaBase*>& vec, const string& filename)
 			MediaBase* newMovie = new Movie(title, new Time(seconds), director);
 			vec.push_back(newMovie);
 		}
+		else if (data == TYPES[1])
+		{
+			string title;
+			getline(fin, title);
+
+			int seconds;
+			fin >> seconds;
+			fin.ignore();
+
+			int seasons;
+			fin >> seasons;
+			fin.ignore();
+
+			int episodes;
+			fin >> episodes;
+			fin.ignore();
+
+			MediaBase* newMovie = new TVShow(title, new Time(seconds), seasons, episodes);
+			vec.push_back(newMovie);
+		}
 	}
 }
 
