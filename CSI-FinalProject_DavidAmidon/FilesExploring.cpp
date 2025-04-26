@@ -36,6 +36,21 @@ MediaBase* mediaType()
 	}
 }
 
+void deleteMedia(vector<MediaBase*> vec)
+{
+	string titleToDelete;
+	getInput(titleToDelete, "What is the Title you want to delete: ");
+
+	for (int i = 0; i < vec.size(); i++)
+	{
+		if (vec.at(i)->getTitle() == titleToDelete)
+		{
+			vec.erase(vec.begin() + i);
+			break;
+		}
+	}
+}
+
 void openUserFile(string user)
 {
 	//Set up and open user file;
@@ -67,6 +82,8 @@ void openUserFile(string user)
 		break;
 	case 3:
 		//Remove Media
+		deleteMedia(list);
+		writeToFile(list, filename);
 		break;
 	case 4:
 		//View Media
