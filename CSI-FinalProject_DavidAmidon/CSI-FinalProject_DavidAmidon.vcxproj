@@ -127,13 +127,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CSI-FinalProject_DavidAmidon.cpp" />
-    <ClCompile Include="FilesExploring.cpp" />
+    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="FileEditing.cpp" />
+    <ClCompile Include="Login.cpp" />
     <ClCompile Include="MediaClasses.cpp" />
     <ClCompile Include="Time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FileEditing.h" />
     <ClInclude Include="Header.h" />
+    <ClInclude Include="Login.h" />
     <ClInclude Include="MediaClasses.h" />
     <ClInclude Include="Time.h" />
   </ItemGroup>

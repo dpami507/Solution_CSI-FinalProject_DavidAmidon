@@ -1,21 +1,6 @@
 #include "Header.h"
-
-template<class T>
-void getInput(T& data, string msg = "")
-{
-	do
-	{
-		cout << msg;
-		getline(cin, data);
-
-	} while (data.length() <= 0);
-}
-
-void getInput(int& data, string msg = "")
-{
-	cout << msg;
-	cin >> data;
-}
+#include "Login.h"
+#include "FileEditing.h"
 
 bool usernameTaken(string username)
 {
@@ -56,7 +41,6 @@ string getUserPassword(string username)
 		}
 	}
 }
-
 void printUserChoices()
 {
 	cout << "1. Add Media to List\n";
@@ -68,6 +52,70 @@ void printUserChoices()
 	cout << "7. Log Out\n";
 }
 
+void createUserFile(string user)
+{
+	string fileName = user + ".txt";
+	ofstream file(fileName, std::ios::app);
+}
+void openUserFile(string user)
+{
+	//Set up and open user file;
+	string filename = user + ".txt";
+
+	vector<MediaBase*> list;
+	{
+		ifstream fin(filename);
+		fillVectorWithFile(list, filename);
+		fin.close();
+	}
+
+	cout << "===== " << user << "'s Collection =====\n";
+	printUserChoices();
+	int choice;
+	getInput(choice, "Choice: ");
+
+	switch (choice)
+	{
+	case 1:
+		addMedia(list);
+		writeToFile(list, filename);
+		break;
+	case 2:
+		//Edit Media 
+		editMedia(list);
+		writeToFile(list, filename);
+		break;
+	case 3:
+		//Remove Media
+		deleteMedia(list);
+		writeToFile(list, filename);
+		break;
+	case 4:
+		//View Media
+		cout << "\n===== All Your Media =====\n";
+		for (MediaBase* media : list)
+		{
+			media->print();
+		}
+		break;
+	case 5:
+		//View Catagory
+		break;
+	case 6:
+		//Search Media
+		break;
+	case 7:
+		//Log Out
+		loginScreen();
+		break;
+	default:
+		cout << "[!] Not a valid option [!]\n";
+		break;
+	}
+
+	cout << endl;
+	openUserFile(user);
+}
 void createAccount()
 {
 	//Get Users File
@@ -116,6 +164,38 @@ void createAccount()
 	openUserFile(username);
 }
 
+void loginScreen()
+{
+	int input;
+
+	cout << "===== Login Page =====\n";
+	cout << "1. Login\n";
+	cout << "2. Create Account\n";
+	cout << "3. Exit\n";
+
+	cout << "Choice : ";
+	cin >> input;
+
+	cout << endl;
+
+	switch (input)
+	{
+	case 1:
+		//Login
+		login();
+		break;
+	case 2:
+		//Create Account
+		createAccount();
+		break;
+	case 3:
+		//Exit
+		exit(0);
+		break;
+	default:
+		break;
+	}
+}
 void login()
 {
 	//User Data for account
@@ -170,44 +250,4 @@ void login()
 			break;
 		}
 	}
-}
-
-void loginScreen()
-{
-	int input;
-
-	cout << "===== Login Page =====\n";
-	cout << "1. Login\n";
-	cout << "2. Create Account\n";
-	cout << "3. Exit\n";
-
-	cout << "Choice : ";
-	cin >> input;
-
-	cout << endl;
-
-	switch (input)
-	{
-	case 1:
-		//Login
-		login();
-		break;
-	case 2:
-		//Create Account
-		createAccount();
-		break;
-	case 3:
-		//Exit
-		exit(0);
-		break;
-	default:
-		break;
-	}
-}
-
-int main()
-{
-	loginScreen();
-
-	return 0;
 }

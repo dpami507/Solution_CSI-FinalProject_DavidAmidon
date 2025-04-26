@@ -48,6 +48,7 @@ Movie::~Movie()
 //Getters
 string Movie::getDirector() { return director; }
 
+//Formats for file
 string Movie::formatInfo()
 {
 	stringstream format;
@@ -59,11 +60,12 @@ string Movie::formatInfo()
 	return format.str();
 }
 
+//Prints for user
 void Movie::print()
 {
-	cout << getTitle() << endl;
-	cout << getFormatedTime();
-	cout << getDirector() << endl;
+	cout << "Title: " << getTitle() << endl;
+	cout << "Director: " << getDirector() << endl;
+	cout << "Runtime: " << getFormatedTime() << endl;
 }
 
 // --------------------- TV Show --------------------- //
@@ -83,13 +85,14 @@ TVShow::TVShow() : MediaBase()
 }
 TVShow::~TVShow()
 {
-	//Tv Show destructered
+	//Tv Show destructed
 }
 
 //Getters
 int TVShow::getSeasonLength() { return seasonLength; }
 int TVShow::getEpisodeCount() { return episodeCount; }
 
+//Formats for file
 string TVShow::formatInfo()
 {
 	stringstream format;
@@ -102,14 +105,60 @@ string TVShow::formatInfo()
 	return format.str();
 }
 
+//Prints for user
 void TVShow::print()
 {
-	cout << getTitle() << endl;
-	cout << getFormatedTime();
-	cout << getSeasonLength() << endl;
-	cout << getEpisodeCount() << endl;
+	cout << "Title: " << getTitle() << endl;
+	cout << "Seasons: " << getSeasonLength() << endl;
+	cout << "Episodes per Season: " << getEpisodeCount() << endl;
+	cout << "Episode Runtime: " << getFormatedTime() << endl;
 }
 
+// --------------------- Song --------------------- //
+Song::Song(string title, Time* time, string leadArtist, string album) : MediaBase(title, time)
+{
+	setType(TYPES[2]);
+	this->leadArtist = leadArtist;
+	this->album = album;
+}
+
+Song::Song() : MediaBase()
+{
+	setType(TYPES[2]);
+	cin.ignore();
+	getInput(leadArtist, "Who is the lead Artist: ");
+	getInput(album, "What Album is it apart of: ");
+}
+
+Song::~Song()
+{
+	//Song destructed
+}
+
+string Song::getLeadArtist() { return leadArtist; }
+string Song::getAlbum() { return album; }
+
+//Formats for file
+string Song::formatInfo()
+{
+	stringstream format;
+	format << getType() << endl
+		<< getTitle() << endl
+		<< getLength() << endl
+		<< getLeadArtist() << endl
+		<< getAlbum() << endl;
+
+	return format.str();
+}
+
+//Prints for user
+void Song::print()
+{
+	cout << "Title: " << getTitle() << endl;
+	cout << "Album: " << getAlbum() << endl;
+	cout << "Lead Artist: " << getLeadArtist() << endl;
+	cout << "Song Length: " << getFormatedTime() << endl;
+}
 
 void fillVectorWithFile(vector<MediaBase*>& vec, const string& filename)
 {
@@ -131,8 +180,8 @@ void fillVectorWithFile(vector<MediaBase*>& vec, const string& filename)
 			string director;
 			getline(fin, director);
 
-			MediaBase* newMovie = new Movie(title, new Time(seconds), director);
-			vec.push_back(newMovie);
+			MediaBase* newMedia = new Movie(title, new Time(seconds), director);
+			vec.push_back(newMedia);
 		}
 		else if (data == TYPES[1])
 		{
@@ -151,8 +200,26 @@ void fillVectorWithFile(vector<MediaBase*>& vec, const string& filename)
 			fin >> episodes;
 			fin.ignore();
 
-			MediaBase* newMovie = new TVShow(title, new Time(seconds), seasons, episodes);
-			vec.push_back(newMovie);
+			MediaBase* newMedia = new TVShow(title, new Time(seconds), seasons, episodes);
+			vec.push_back(newMedia);
+		}
+		else if (data == TYPES[2])
+		{
+			string title;
+			getline(fin, title);
+
+			int seconds;
+			fin >> seconds;
+			fin.ignore();
+
+			string artist;
+			getline(fin, artist);
+
+			string album;
+			getline(fin, album);
+
+			MediaBase* newMedia = new Song(title, new Time(seconds), artist, album);
+			vec.push_back(newMedia);
 		}
 	}
 }
@@ -162,7 +229,6 @@ void writeToFile(vector<MediaBase*>& vec, const string& filename)
 	ofstream fout(filename);
 	for (int i = 0; i < vec.size(); i++)
 	{
-		cout << vec[i]->formatInfo();
 		fout << vec[i]->formatInfo();
 	}
 	fout.close();
