@@ -7,6 +7,11 @@
 #include <vector>
 using namespace std;
 
+//Add Podcast and other Media types
+//Add throwing
+//Add opperator overloading
+//Profit
+
 const string USERS_FILE = "users.txt";
 const string TYPES[] = { "MOVIE", "TVSHOW", "SONG", "PODCAST" };
 const int TYPES_LENGTH = 4;

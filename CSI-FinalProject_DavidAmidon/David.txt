@@ -1,12 +1,4 @@
 MOVIE
-Test
-7263
-Me
-MOVIE
-Test2
-7384
-You
-MOVIE
 MovieTest1
 5014
 John Director
