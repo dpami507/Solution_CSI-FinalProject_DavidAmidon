@@ -24,7 +24,6 @@ MediaBase::~MediaBase()
 string MediaBase::getTitle() { return title; }
 string MediaBase::getType() { return type; }
 int MediaBase::getLength() { return time->getSeconds(); }
-string MediaBase::getFormatedTime() { return time->format(); }
 void MediaBase::setType(string type) { this->type = type; }
 #pragma endregion
 
@@ -68,7 +67,7 @@ void Movie::print()
 {
 	cout << "Title: " << getTitle() << endl;
 	cout << "Director: " << getDirector() << endl;
-	cout << "Runtime: " << getFormatedTime() << endl;
+	cout << "Runtime: " << *time << endl;
 }
 #pragma endregion
 
@@ -116,7 +115,7 @@ void TVShow::print()
 	cout << "Title: " << getTitle() << endl;
 	cout << "Seasons: " << getSeasonLength() << endl;
 	cout << "Episodes per Season: " << getEpisodeCount() << endl;
-	cout << "Episode Runtime: " << getFormatedTime() << endl;
+	cout << "Episode Runtime: " << *time << endl;
 }
 #pragma endregion
 
@@ -164,7 +163,7 @@ void Song::print()
 	cout << "Title: " << getTitle() << endl;
 	cout << "Album: " << getAlbum() << endl;
 	cout << "Lead Artist: " << getLeadArtist() << endl;
-	cout << "Song Length: " << getFormatedTime() << endl;
+	cout << "Song Length: " << *time << endl;
 }
 #pragma endregion
 
@@ -212,7 +211,7 @@ void Podcast::print()
 	cout << "Title: " << getTitle() << endl;
 	cout << "Host: " << getHost() << endl;
 	cout << "Platform: " << getPlatform() << endl;
-	cout << "Song Length: " << getFormatedTime() << endl;
+	cout << "Song Length: " << *time << endl;
 }
 #pragma endregion
 

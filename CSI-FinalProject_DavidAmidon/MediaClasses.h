@@ -16,14 +16,14 @@ public:
 	string getTitle();
 	string getType();
 	int getLength();
-	string getFormatedTime();
 
 	void setType(string type);
+protected:
+	Time* time;
 
 private:
 	string title;
 	string type;
-	Time* time;
 };
 
 class Movie : public MediaBase

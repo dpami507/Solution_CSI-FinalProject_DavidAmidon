@@ -2,8 +2,13 @@ MOVIE
 MovieTest1
 4500
 Steve Movie
-SONG
-Podcast
+PODCAST
+CheeseCast
 3600
-John
+JohnCast
 Spotify
+SONG
+SongTest
+194
+Taylor Swift
+Album Test

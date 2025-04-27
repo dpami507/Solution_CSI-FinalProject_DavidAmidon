@@ -92,17 +92,15 @@ void openUserFile(string user)
 		break;
 	case 4:
 		//View Media
-		cout << "\n===== All Your Media =====\n";
-		for (MediaBase* media : list)
-		{
-			media->print();
-		}
+		printAllMedia(list);
 		break;
 	case 5:
 		//View Catagory
+		searchMediaByCatagory(list);
 		break;
 	case 6:
 		//Search Media
+		searchMediaByName(list);
 		break;
 	case 7:
 		//Log Out

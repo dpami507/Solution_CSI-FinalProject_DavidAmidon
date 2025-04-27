@@ -56,6 +56,14 @@ int Time::getSeconds()
 	return totalSeconds;
 }
 
+ostream& operator<<(ostream& out, const Time& time)
+{
+	out << setfill('0') << setw(2) << time.hours << ":"
+		<< setfill('0') << setw(2) << time.minutes << ":"
+		<< setfill('0') << setw(2) << time.seconds << endl;
+	return out;
+}
+
 string Time::format()
 {
 	stringstream time;

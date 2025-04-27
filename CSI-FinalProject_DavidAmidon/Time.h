@@ -15,4 +15,5 @@ private:
 	int hours;
 	int minutes;
 	int seconds;
+	friend ostream& operator<<(ostream& out, const Time& time);
 };
