@@ -1,3 +1,9 @@
+/*
+Author        : David Amidon
+Class         : CSI - 240 : Advanced Programming
+Assignment    : CSI-240 Final Project
+*/
+
 #include "Header.h"
 #include "MediaClasses.h"
 
@@ -41,14 +47,17 @@ MediaBase* mediaType()
 
 void addMedia(vector<MediaBase*>& vec)
 {
+	//Create new type
 	MediaBase* newMedia;
 
 	try
 	{
+		//Get new type from user
 		newMedia = mediaType();
 	}
 	catch (const string& msg)
 	{
+		//Error if wrong type inputed
 		cout << msg;
 		return;
 	}
@@ -62,12 +71,15 @@ void addMedia(vector<MediaBase*>& vec)
 
 void deleteMedia(vector<MediaBase*>& vec)
 {
+	//Get title
 	cin.ignore();
 	string titleToDelete;
 	getInput(titleToDelete, "What is the Title you want to delete: ");
 
+	//Check all titles in user vector
 	for (int i = 0; i < vec.size(); i++)
 	{
+		//If it is equal delete it
 		if (vec.at(i)->getTitle() == titleToDelete)
 		{
 			vec.erase(vec.begin() + i);
@@ -75,17 +87,21 @@ void deleteMedia(vector<MediaBase*>& vec)
 		}
 	}
 
+	//Runs if title not in vector
 	cout << "[!] Title not found [!]\n";
 }
 
 void editMedia(vector<MediaBase*>& vec)
 {
+	//Get user input
 	cin.ignore();
 	string titleToEdit;
 	getInput(titleToEdit, "What is the Title you want to edit: ");
 
+	//Loop through entire vector
 	for (int i = 0; i < vec.size(); i++)
 	{
+		//If title is equal, create new entry at that position allowing for editing
 		if (vec.at(i)->getTitle() == titleToEdit)
 		{
 			MediaBase* newMedia;
@@ -99,6 +115,7 @@ void editMedia(vector<MediaBase*>& vec)
 
 void printAllMedia(vector<MediaBase*>& vec)
 {
+	//Loop through vector and print media
 	cout << "\n===== All Your Media =====\n";
 	int counter = 0;
 	for (MediaBase* media : vec)
@@ -127,7 +144,7 @@ void searchMediaByCatagory(const vector<MediaBase*>& vec)
 
 	string type;
 
-	//return type
+	//get type
 	switch (choice)
 	{
 	case 0:
@@ -143,12 +160,13 @@ void searchMediaByCatagory(const vector<MediaBase*>& vec)
 		type = TYPES[3];
 		break;
 	default:
-		string msg = "[!] Not an Option [!]\n";
-		throw msg;
+		cout << "[!] Not an Option [!]\n";
+		break;
 	}
 
 	cout << "\n===== Searching Catagory '" << type << "' ===== \n";
 
+	//Go through Vector
 	int counter = 0;
 	for (MediaBase* media : vec)
 	{
@@ -164,6 +182,7 @@ void searchMediaByCatagory(const vector<MediaBase*>& vec)
 
 void searchMediaByName(const vector<MediaBase*>& vec)
 {
+	//User input
 	cin.ignore();
 	string mediaNameSearch;
 	cout << "\nWhat is the Title are you searching?\n";
@@ -171,8 +190,10 @@ void searchMediaByName(const vector<MediaBase*>& vec)
 
 	cout << "\n===== Search for '" << mediaNameSearch << "' ==== = \n";
 
+	//loop through vector
 	for (int i = 0; i < vec.size(); i++)
 	{
+		//if title matches print it
 		if (vec.at(i)->getTitle() == mediaNameSearch)
 		{
 			vec[i]->print();

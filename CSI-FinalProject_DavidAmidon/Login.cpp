@@ -1,3 +1,9 @@
+/*
+Author        : David Amidon
+Class         : CSI - 240 : Advanced Programming
+Assignment    : CSI-240 Final Project
+*/
+
 #include "Header.h"
 #include "Login.h"
 #include "FileEditing.h"
@@ -6,17 +12,20 @@ bool usernameTaken(string username)
 {
 	ifstream fin(USERS_FILE);
 
+	//Checks if there is a user file
 	if (!fin.is_open())
 	{
 		cout << "[!] NO USERS FILE : Please create an account first [!]\n";
 		loginScreen();
 	}
 
+	//Go through all usernames
 	while (!fin.eof())
 	{
 		string line;
 		getline(fin, line);
 
+		//If there is a match return true
 		if (line == username)
 			return true;
 
@@ -34,6 +43,7 @@ string getUserPassword(string username)
 		string line;
 		getline(fin, line);
 
+		//Find user name and return the next line (password)
 		if (line == username)
 		{
 			getline(fin, line);
@@ -54,6 +64,7 @@ void printUserChoices()
 
 void createUserFile(string user)
 {
+	//Creates user file following format of (username.txt)
 	string fileName = user + ".txt";
 	ofstream file(fileName, std::ios::app);
 }
@@ -62,6 +73,7 @@ void openUserFile(string user)
 	//Set up and open user file;
 	string filename = user + ".txt";
 
+	//Create vector andn fill it
 	vector<MediaBase*> list;
 	{
 		ifstream fin(filename);

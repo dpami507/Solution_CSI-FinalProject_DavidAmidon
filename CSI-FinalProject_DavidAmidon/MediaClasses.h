@@ -1,3 +1,9 @@
+/*
+Author        : David Amidon
+Class         : CSI - 240 : Advanced Programming
+Assignment    : CSI-240 Final Project
+*/
+
 #pragma once
 #include "Header.h"
 #include "Time.h"

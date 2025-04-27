@@ -1,3 +1,9 @@
+/*
+Author        : David Amidon
+Class         : CSI - 240 : Advanced Programming
+Assignment    : CSI-240 Final Project
+*/
+
 #include "Header.h"
 #include "Time.h"
 
@@ -39,10 +45,12 @@ void Time::fixTime()
 
 void Time::setTimeFromSeconds(const int& i)
 {
+	//Set seconds
 	seconds = i;
 	minutes = 0;
 	hours = 0;
 
+	//Just fix it
 	fixTime();
 }
 
