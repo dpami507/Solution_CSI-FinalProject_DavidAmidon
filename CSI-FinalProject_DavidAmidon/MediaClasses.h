@@ -84,5 +84,25 @@ private:
 	string album;
 };
 
+class Podcast : public MediaBase 
+{
+public:
+	Podcast(string title, Time* time, string leadArtist, string album);
+	Podcast();
+	~Podcast();
+
+	//Getters
+	string getHost();
+	string getPlatform();
+
+	virtual string formatInfo();
+
+	virtual void print() override;
+
+private:
+	string host;
+	string platform;
+};
+
 void fillVectorWithFile(vector<MediaBase*>& vec, const string& filename);
 void writeToFile(vector<MediaBase*>& vec, const string& filename);

@@ -1,6 +1,7 @@
 #include "Header.h"
 #include "MediaClasses.h"
 
+#pragma region MediaBase
 MediaBase::MediaBase()
 {
 	cin.ignore();
@@ -25,7 +26,9 @@ string MediaBase::getType() { return type; }
 int MediaBase::getLength() { return time->getSeconds(); }
 string MediaBase::getFormatedTime() { return time->format(); }
 void MediaBase::setType(string type) { this->type = type; }
+#pragma endregion
 
+#pragma region Movie
 // --------------------- Movie --------------------- //
 Movie::Movie(string title, Time* time, string director) : MediaBase(title, time)
 {
@@ -67,7 +70,9 @@ void Movie::print()
 	cout << "Director: " << getDirector() << endl;
 	cout << "Runtime: " << getFormatedTime() << endl;
 }
+#pragma endregion
 
+#pragma region TVShow
 // --------------------- TV Show --------------------- //
 TVShow::TVShow(string title, Time* time, int seasonLength, int episodeCount) : MediaBase(title, time)
 {
@@ -113,7 +118,9 @@ void TVShow::print()
 	cout << "Episodes per Season: " << getEpisodeCount() << endl;
 	cout << "Episode Runtime: " << getFormatedTime() << endl;
 }
+#pragma endregion
 
+#pragma region Song
 // --------------------- Song --------------------- //
 Song::Song(string title, Time* time, string leadArtist, string album) : MediaBase(title, time)
 {
@@ -159,6 +166,56 @@ void Song::print()
 	cout << "Lead Artist: " << getLeadArtist() << endl;
 	cout << "Song Length: " << getFormatedTime() << endl;
 }
+#pragma endregion
+
+#pragma region Podcast
+// --------------------- Podcast --------------------- //
+Podcast::Podcast(string title, Time* time, string host, string platform) : MediaBase(title, time)
+{
+	setType(TYPES[3]);
+	this->host = host;
+	this->platform = platform;
+}
+
+Podcast::Podcast() : MediaBase()
+{
+	setType(TYPES[3]);
+	cin.ignore();
+	getInput(host, "Who is the Host: ");
+	getInput(platform, "What Platform is it on: ");
+}
+
+Podcast::~Podcast()
+{
+	//Podcast destructed
+}
+
+string Podcast::getHost() { return host; }
+string Podcast::getPlatform() { return platform; }
+
+//Formats for file
+string Podcast::formatInfo()
+{
+	stringstream format;
+	format << getType() << endl
+		<< getTitle() << endl
+		<< getLength() << endl
+		<< getHost() << endl
+		<< getPlatform() << endl;
+
+	return format.str();
+}
+
+//Prints for user
+void Podcast::print()
+{
+	cout << "Title: " << getTitle() << endl;
+	cout << "Host: " << getHost() << endl;
+	cout << "Platform: " << getPlatform() << endl;
+	cout << "Song Length: " << getFormatedTime() << endl;
+}
+#pragma endregion
+
 
 void fillVectorWithFile(vector<MediaBase*>& vec, const string& filename)
 {
@@ -221,9 +278,26 @@ void fillVectorWithFile(vector<MediaBase*>& vec, const string& filename)
 			MediaBase* newMedia = new Song(title, new Time(seconds), artist, album);
 			vec.push_back(newMedia);
 		}
+		else if (data == TYPES[3])
+		{
+			string title;
+			getline(fin, title);
+
+			int seconds;
+			fin >> seconds;
+			fin.ignore();
+
+			string host;
+			getline(fin, host);
+
+			string platform;
+			getline(fin, platform);
+
+			MediaBase* newMedia = new Podcast(title, new Time(seconds), host, platform);
+			vec.push_back(newMedia);
+		}
 	}
 }
-
 void writeToFile(vector<MediaBase*>& vec, const string& filename)
 {
 	ofstream fout(filename);

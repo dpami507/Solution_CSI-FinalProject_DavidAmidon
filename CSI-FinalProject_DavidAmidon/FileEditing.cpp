@@ -30,8 +30,12 @@ MediaBase* mediaType()
 	case 2:
 		type = new Song();
 		return type;
+	case 3:
+		type = new Podcast();
+		return type;
 	default:
-		break;
+		string msg = "[!] Not an Option [!]\n";
+		throw msg;
 	}
 }
 
@@ -39,7 +43,20 @@ void addMedia(vector<MediaBase*>& vec)
 {
 	MediaBase* newMedia;
 
-	newMedia = mediaType();
+	try
+	{
+		newMedia = mediaType();
+	}
+	catch (const string& msg)
+	{
+		cout << msg;
+		return;
+	}
+	catch (...)
+	{
+		cout << "[!] DEV_ERR: WRONG THROW TYPE [!]\n";
+		return;
+	}
 	vec.push_back(newMedia);
 }
 
