@@ -116,6 +116,11 @@ void openUserFile(string user)
 		break;
 	case 7:
 		//Log Out
+		for (MediaBase* l : list)
+		{
+			delete l; 
+			l = nullptr;
+		}
 		loginScreen();
 		break;
 	default:
