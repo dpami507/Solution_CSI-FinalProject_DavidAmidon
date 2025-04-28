@@ -14,6 +14,7 @@ MediaBase* mediaType()
 	//Print types
 	for (int i = 0; i < TYPES_LENGTH; i++)
 	{
+		cout << setfill(' ');
 		cout << i << ". " << setw(10) << left << TYPES[i];
 	}
 	cout << endl;

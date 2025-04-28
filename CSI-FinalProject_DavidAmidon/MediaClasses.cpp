@@ -217,7 +217,7 @@ void Podcast::print()
 	cout << "Title: " << getTitle() << endl;
 	cout << "Host: " << getHost() << endl;
 	cout << "Platform: " << getPlatform() << endl;
-	cout << "Song Length: " << *time << endl;
+	cout << "Episode Length: " << *time << endl;
 }
 #pragma endregion
 

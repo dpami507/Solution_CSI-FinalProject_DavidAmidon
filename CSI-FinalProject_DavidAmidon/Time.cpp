@@ -66,9 +66,9 @@ int Time::getSeconds()
 
 ostream& operator<<(ostream& out, const Time& time)
 {
-	out << setfill('0') << setw(2) << time.hours << ":"
-		<< setfill('0') << setw(2) << time.minutes << ":"
-		<< setfill('0') << setw(2) << time.seconds << endl;
+	out << right << setfill('0') << setw(2) << time.hours << ":"
+		<< right << setfill('0') << setw(2) << time.minutes << ":"
+		<< right << setfill('0') << setw(2) << time.seconds << endl;
 	return out;
 }
 
